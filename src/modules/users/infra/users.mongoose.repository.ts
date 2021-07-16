@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { IUser } from 'src/shared/interfaces/user.interface';
 import { MongooseRepository } from 'src/shared/mongoose.repository';
 import { User, UserDocument } from 'src/shared/mongoose/schemas/User.schema';
-import { IUsersRepository } from './interfaces/users.repository.interface';
+import { IUsersRepository } from '../interfaces/users.repository.interface';
 
 @Injectable()
 export class UsersMongooseRepository

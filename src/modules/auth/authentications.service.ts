@@ -1,21 +1,26 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { EncryptionService } from '../encryption/encryption.service';
+import { ENCRYPTION_SERVICE_PROVIDER_KEY } from '../encryption/constants';
+import { IEncryptionService } from '../encryption/interfaces/encryption.service.interface';
 import { USERS_SERVICE_PROVIDER_KEY } from '../users/contants';
 import { IUsersService } from '../users/interfaces/users.service.interface';
-import { RegisterDTO } from './dto/register.dto';
 import { IAuthenticationsService } from './interfaces/authentications.service.interface';
 import { ILoggedUser } from './interfaces/logged-user.interface';
+import { IRegisterUser } from './interfaces/register-user.interface';
 
 @Injectable()
 export class AuthenticationsService implements IAuthenticationsService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly encryptionService: EncryptionService,
+    @Inject(ENCRYPTION_SERVICE_PROVIDER_KEY)
+    private readonly encryptionService: IEncryptionService,
     @Inject(USERS_SERVICE_PROVIDER_KEY)
     private readonly userService: IUsersService,
   ) {}
-  async login(email: string, password: string): Promise<ILoggedUser> {
+  async loginWithEmailAndPassword(
+    email: string,
+    password: string,
+  ): Promise<ILoggedUser> {
     const { passwordHash, ...user } =
       await this.userService.getOneByEmailWithPassword(email);
 
@@ -32,13 +37,13 @@ export class AuthenticationsService implements IAuthenticationsService {
     };
   }
   async register(
-    { email, password }: RegisterDTO,
+    { password, ...user }: IRegisterUser,
     roles: string[],
   ): Promise<ILoggedUser> {
     const passwordHash = await this.encryptionService.encryptPassword(password);
 
     const createdUser = await this.userService.create({
-      email,
+      ...user,
       passwordHash,
       roles: roles,
     });

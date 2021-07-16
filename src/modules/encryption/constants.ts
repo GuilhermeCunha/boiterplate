@@ -1,4 +1,1 @@
-import { config } from 'dotenv';
-config();
-
-export const PASSWORD_ENCRYPT_SECRET = process.env.PASSWORD_ENCRYPT_SECRET;
+export const ENCRYPTION_SERVICE_PROVIDER_KEY = 'ENCRYPTION_SERVICE_PROVIDER';

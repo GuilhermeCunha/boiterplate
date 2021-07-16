@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from 'src/shared/mongoose/mongoose.module';
-import { AuthenticationsModule } from './modules/auth/authentications.module';
-import { UsersModule } from './modules/users/users.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './shared/auth/auth.module';
+import { MODULES } from './modules';
 
 @Module({
   imports: [
@@ -16,8 +15,7 @@ import { AuthModule } from './shared/auth/auth.module';
     }),
     MongooseModule,
     AuthModule,
-    AuthenticationsModule,
-    UsersModule,
+    ...MODULES,
   ],
   controllers: [AppController],
   providers: [AppService],

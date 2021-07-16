@@ -1,7 +1,10 @@
-import { RegisterDTO } from '../dto/register.dto';
 import { ILoggedUser } from './logged-user.interface';
+import { IRegisterUser } from './register-user.interface';
 
 export interface IAuthenticationsService {
-  login(email: string, password: string): Promise<ILoggedUser>;
-  register(body: RegisterDTO, roles: string[]): Promise<ILoggedUser>;
+  loginWithEmailAndPassword(
+    email: string,
+    password: string,
+  ): Promise<ILoggedUser>;
+  register(body: IRegisterUser, roles: string[]): Promise<ILoggedUser>;
 }
